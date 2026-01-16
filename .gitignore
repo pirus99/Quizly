@@ -1,0 +1,93 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+pip-wheel-metadata/
+wheels/
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+.pytest_cache/
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+
+# Django
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+media/
+staticfiles/
+# If you collect static into ./static/ uncomment next line
+# static/
+# Django migration files are normally committed; do not ignore migrations/ unless intentional
+
+# Environment / secrets
+.env
+.env.*.local
+.env.local
+.venv/
+venv/
+ENV/
+env/
+venv.bak/
+
+# Celery
+celerybeat-schedule
+celerybeat.pid
+
+# IDEs / editors
+.vscode/
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# OS
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Icon?
+
+# Node (if frontend assets present)
+node_modules/
+npm-debug.log
+yarn-error.log
+yarn-debug.log
+.pnp.*
+
+# Python caches / tooling
+.mypy_cache/
+.pyre/
+.prof
+.spelling
+
+# Jupyter
+.ipynb_checkpoints
+
+# Others
+*.sqlite3
+*.sqlite3-wal
+*.manifest
+*.spec
