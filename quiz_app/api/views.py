@@ -36,3 +36,62 @@ class CreateQuizView(APIView):
         serializer.save()
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+class ListQuizzesView(APIView):
+    def get(self, request):
+        from quiz_app.models import Quiz
+        from quiz_app.api.serializers import QuizListSerializer
+
+        quizzes = Quiz.objects.filter(user=request.user)
+        serializer = QuizListSerializer(quizzes, many=True)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+class SingleQuizView(APIView):
+    def get(self, request, quiz_id):
+        from quiz_app.models import Quiz
+        from quiz_app.api.serializers import QuizListSerializer
+
+        try:
+            quiz = Quiz.objects.get(id=quiz_id, user=request.user)
+            if request.user != quiz.user:
+                return Response({"detail": "Not authorized to access this quiz."}, status=status.HTTP_403_FORBIDDEN)
+        except Quiz.DoesNotExist:
+            return Response({"detail": "Quiz not found."}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = QuizListSerializer(quiz)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+class PatchQuizView(APIView):
+    def patch(self, request, quiz_id):
+        from quiz_app.models import Quiz
+        from quiz_app.api.serializers import QuizCreationSerializer
+
+        try:
+            quiz = Quiz.objects.get(id=quiz_id, user=request.user)
+            if request.user != quiz.user:
+                return Response({"detail": "Not authorized to modify this quiz."}, status=status.HTTP_403_FORBIDDEN)
+        except Quiz.DoesNotExist:
+            return Response({"detail": "Quiz not found."}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = QuizCreationSerializer(quiz, data=request.data, partial=True, context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+class DeleteQuizView(APIView):
+    def delete(self, request, quiz_id):
+        from quiz_app.models import Quiz
+
+        try:
+            quiz = Quiz.objects.get(id=quiz_id, user=request.user)
+            if request.user != quiz.user:
+                return Response({"detail": "Not authorized to delete this quiz."}, status=status.HTTP_403_FORBIDDEN)
+        except Quiz.DoesNotExist:
+            return Response({"detail": "Quiz not found."}, status=status.HTTP_404_NOT_FOUND)
+
+        quiz.delete()
+
+        return Response(status=status.HTTP_204_NO_CONTENT)

@@ -8,7 +8,6 @@ class QuestionSerializer(ModelSerializer):
         model = Question
         fields = ['question_title', 'question_options', 'answer']
 
-
 class QuizCreationSerializer(ModelSerializer):
     questions = QuestionSerializer(many=True)
 
@@ -26,3 +25,9 @@ class QuizCreationSerializer(ModelSerializer):
             Question.objects.create(quiz=quiz, **q)
 
         return quiz
+    
+class QuizListSerializer(ModelSerializer):
+    questions = QuestionSerializer(many=True, read_only=True)
+    class Meta:
+        model = Quiz
+        fields = ['id', 'title', 'description', 'created_at', 'updated_at', 'video_url', 'questions']
