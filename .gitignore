@@ -44,6 +44,7 @@ staticfiles/
 # Django migration files are normally committed; do not ignore migrations/ unless intentional
 
 # Environment / secrets
+env
 .env
 .env.*.local
 .env.local
