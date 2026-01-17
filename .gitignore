@@ -91,3 +91,5 @@ yarn-debug.log
 *.sqlite3-wal
 *.manifest
 *.spec
+*.log
+temp_audio/
