@@ -39,7 +39,7 @@ class TokenRefreshView(APIView):
                 'access': access_token
             })
 
-            response.set_cookie(key='access_token', value=access_token, httponly=True)
+            response.set_cookie(key='access_token', value=access_token, httponly=True, path='/', samesite='None', secure=True)
 
             return response
         except Exception:
@@ -48,8 +48,8 @@ class TokenRefreshView(APIView):
 class LogoutView(APIView):
     def post(self, request):
         response = Response()
-        response.delete_cookie('access_token')
-        response.delete_cookie('refresh_token')
+        response.delete_cookie('access_token', path='/', samesite='None')
+        response.delete_cookie('refresh_token', path='/', samesite='None')
         response.data = {
             'detail': 'Log-Out successfully! All Tokens will be deleted. Refresh token is now invalid.'
         }
@@ -74,8 +74,9 @@ class LoginView(TokenObtainPairView):
                 }
             })
 
-            response.set_cookie(key='access_token', value=tokens['access'], httponly=True)
-            response.set_cookie(key='refresh_token', value=tokens['refresh'], httponly=True)
+            cookie_params = dict(httponly=True, path='/', samesite='None', secure=True)
+            response.set_cookie(key='access_token', value=tokens['access'], **cookie_params)
+            response.set_cookie(key='refresh_token', value=tokens['refresh'], **cookie_params)
 
             return response
         except Exception:

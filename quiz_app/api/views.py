@@ -1,6 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.permissions import AllowAny
 import time
 
 from quiz_app.api.serializers import QuizCreationSerializer
@@ -63,7 +64,6 @@ class SingleQuizView(APIView):
 
         return Response(serializer.data, status=status.HTTP_200_OK)
     
-class PatchQuizView(APIView):
     def patch(self, request, quiz_id):
         from quiz_app.models import Quiz
         from quiz_app.api.serializers import QuizCreationSerializer
@@ -81,7 +81,6 @@ class PatchQuizView(APIView):
 
         return Response(serializer.data, status=status.HTTP_200_OK)
     
-class DeleteQuizView(APIView):
     def delete(self, request, quiz_id):
         from quiz_app.models import Quiz
 
@@ -95,3 +94,4 @@ class DeleteQuizView(APIView):
         quiz.delete()
 
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
