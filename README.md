@@ -31,8 +31,12 @@ choco install ffmpeg
 # Using Scoop
 scoop install ffmpeg
 
+# Using WinGet
+
+winget install ffmpeg
+
 # Or download manually from: https://ffmpeg.org/download.html
-# Add FFmpeg to your system PATH
+# IMPORTANT: Add FFmpeg to your system PATH
 ```
 
 #### macOS
@@ -273,19 +277,9 @@ python manage.py createsuperuser
 - Use HTTPS in production
 - Regularly update dependencies for security patches
 
-## Contributing
-
-Contributions are welcome! Please follow these steps:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
 ## License
 
-This project is open source and available under the MIT License.
+This project is open source and only for Educational purposes.
 
 ## Acknowledgments
 
