@@ -15,7 +15,15 @@ from quiz_app.api.services import (
     )
 
 class CreateQuizView(APIView):
+    """API view to create a quiz from a YouTube video URL."""
+    
     def post(self, request):
+        """
+        Process a YouTube video to generate a quiz.
+        
+        Downloads audio, transcribes it, generates quiz questions using AI,
+        and saves the quiz to the database.
+        """
         audio_path = "temp_audio/" + str(int(time.time()))
         
         youtube_url = validate_youtube_url(request.data.get('url'))
@@ -39,6 +47,8 @@ class CreateQuizView(APIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     
 class ListQuizzesView(APIView):
+    """API view to list all quizzes for the authenticated user."""
+    
     def get(self, request):
         from quiz_app.models import Quiz
         from quiz_app.api.serializers import QuizListSerializer
@@ -49,6 +59,8 @@ class ListQuizzesView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
     
 class SingleQuizView(APIView):
+    """API view to retrieve, update, or delete a single quiz."""
+    
     def get(self, request, quiz_id):
         from quiz_app.models import Quiz
         from quiz_app.api.serializers import QuizListSerializer

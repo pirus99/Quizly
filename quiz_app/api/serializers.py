@@ -9,6 +9,12 @@ class QuestionSerializer(ModelSerializer):
         fields = ['question_title', 'question_options', 'answer']
 
 class QuizCreationSerializer(ModelSerializer):
+    """
+    Serializer for creating and updating quizzes with nested questions.
+    
+    Handles the creation of Quiz objects along with their associated Question
+    objects in a single transaction.
+    """
     questions = QuestionSerializer(many=True)
 
     class Meta:
@@ -16,6 +22,12 @@ class QuizCreationSerializer(ModelSerializer):
         fields = ['id', 'title', 'description', 'created_at', 'updated_at', 'video_url', 'questions']
 
     def create(self, validated_data):
+        """
+        Create a quiz with nested questions.
+        
+        Extracts question data, creates the quiz, then creates all associated
+        questions linked to the quiz.
+        """
         questions_data = validated_data.pop('questions', [])
         request = self.context.get('request')
         user = getattr(request, 'user', None)
