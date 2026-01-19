@@ -7,6 +7,8 @@ from .serializers import RegistrationSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 class RegistrationView(APIView):
+    """API view for user registration."""
+    
     permission_classes = [AllowAny]
 
     def post(self, request):
@@ -23,6 +25,8 @@ class RegistrationView(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
 class TokenRefreshView(APIView):
+    """API view to refresh JWT access token using refresh token from cookies."""
+    
     permission_classes = [AllowAny]
 
     def post(self, request):
@@ -46,6 +50,8 @@ class TokenRefreshView(APIView):
             return Response({'detail': 'Invalid refresh token'}, status=status.HTTP_401_UNAUTHORIZED)
         
 class LogoutView(APIView):
+    """API view to logout user by clearing JWT tokens from cookies."""
+    
     def post(self, request):
         response = Response()
         response.delete_cookie('access_token', path='/', samesite='None')
@@ -56,6 +62,8 @@ class LogoutView(APIView):
         return response
         
 class LoginView(TokenObtainPairView):
+    """API view for user login with JWT token generation."""
+    
     permission_classes = [AllowAny]
 
     def post(self, request, *args, **kwargs):
@@ -83,6 +91,15 @@ class LoginView(TokenObtainPairView):
             return Response({'detail': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
         
 def get_tokens_for_user(user):
+    """
+    Generate JWT access and refresh tokens for a user.
+    
+    Args:
+        user: Django User instance
+        
+    Returns:
+        dict: Dictionary with 'refresh' and 'access' token strings
+    """
     refresh = RefreshToken.for_user(user)
         
     return {

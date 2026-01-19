@@ -68,6 +68,19 @@ def validate_youtube_url(url):
 
 
 def download_audio_from_youtube(youtube_url, output_path):
+    """
+    Download and extract audio from a YouTube video.
+    
+    Requires FFmpeg to be installed and available in system PATH.
+    Converts audio to MP3 format at 192kbps quality.
+    
+    Args:
+        youtube_url: Valid YouTube video URL
+        output_path: File path for the downloaded audio (without extension)
+        
+    Raises:
+        RuntimeError: If FFmpeg is not found in PATH
+    """
     ydl_opts = {
         'format': 'bestaudio/best',
         'outtmpl': output_path,
@@ -94,6 +107,18 @@ def download_audio_from_youtube(youtube_url, output_path):
 
 
 def transcribe_audio(file_path):
+    """
+    Transcribe audio file to text using OpenAI Whisper.
+    
+    Automatically detects GPU availability and uses CUDA if available.
+    Falls back to CPU if GPU is not available.
+    
+    Args:
+        file_path: Path to audio file (without .mp3 extension)
+        
+    Returns:
+        str: Transcribed text from the audio file
+    """
     # Check for GPU availability
     if torch.cuda.is_available():
         device = "cuda"
@@ -112,6 +137,21 @@ def transcribe_audio(file_path):
 
 
 def create_quiz_from_transcript(transcript):
+    """
+    Generate quiz questions from a transcript using OpenAI-compatible LLM.
+    
+    Uses the configured OpenAI endpoint and model to create structured
+    quiz data with title, description, and multiple-choice questions.
+    
+    Args:
+        transcript: Text transcript to generate quiz from
+        
+    Returns:
+        dict: Quiz data with 'title', 'description', and 'questions'
+        
+    Raises:
+        ValueError: If the API response cannot be parsed as JSON
+    """
     from openai import OpenAI
 
     prompt = f"Create a quiz based on the following transcript:\n\n{transcript}\n\n"
@@ -151,6 +191,14 @@ def create_quiz_from_transcript(transcript):
     return quiz_obj
 
 def cleanup_temp_files(*file_paths):
+    """
+    Remove temporary files from the filesystem.
+    
+    Silently handles errors for files that don't exist or cannot be deleted.
+    
+    Args:
+        *file_paths: Variable number of file paths to delete
+    """
     for path in file_paths:
         try:
             if os.path.exists(path):
